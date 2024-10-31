@@ -61,7 +61,32 @@ def insert_categoria():
     db.session.add(nuevo_registro)
     db.session.commit()
     return categoria_schema.jsonify(nuevo_registro)
+
+# Peticion PUT para actualizar registros
+@app.route('/actualizarCategoria/<id>', methods=['PUT'])
+def update_categoria(id):
+    updateCategoria = CategoriaDos.query.get(id)
+
+    categoria_nombre = request.json['categoria_nombre']
+    categoria_descripcion = request.json['categoria_descripcion']
+
+    updateCategoria.categoria_nombre = categoria_nombre
+    updateCategoria.categoria_descripcion = categoria_descripcion
+
+    db.session.commit()
+
+    return categoria_schema.jsonify(updateCategoria)
     
+
+# Peticion DELETE para eliminar registros
+@app.route('/eliminarRegistro/<id>', methods=['DELETE'])
+def eliminar_categoria(id):
+    
+    eleiminarCategoria = CategoriaDos.query.get(id)
+    db.session.delete(eleiminarCategoria)
+    db.session.commit()
+
+    return categoria_schema.jsonify(eleiminarCategoria)
 
 #********* MENSAJE DE BIENVENIDA ******************************
 @app.route('/', methods=['GET'])
